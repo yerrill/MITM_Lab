@@ -56,8 +56,8 @@ chmod a+x /root/.local/bin/start_mitmweb.sh
 wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/mitmweb.service.txt
 mv ./mitmweb.service.txt /etc/systemd/system/mitmweb.service
 
-sudo systemctl daemon-reload
-sudo systemctl enable mitmweb.service
+systemctl daemon-reload
+systemctl enable mitmweb.service
 
 # Network traffic
 iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT

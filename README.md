@@ -6,4 +6,20 @@ Based on article from [Dino Fizzotti](https://www.dinofizzotti.com/blog/2022-04-
 
 ## Installation
 
+1. `sudo apt update -y && sudo apt upgrade -y`
+2. `sudo reboot`
+3. `sudo wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup.sh`
+4. `sudo chmod +x setup.sh`
+5. `sudo su`
+6. `./setup.sh`
+7. `exit` & `sudo reboot`
+
 Add `/root/.local/bin` to `PATH`.
+
+## Usage
+
+Go to `http://<ip address of RPi4>:9090/` on a device connected to the same network as the Pi to open the web portal.
+
+Connect to the wifi provided by the Pi on another device. Go to `http://mitm.it` to add the certificate.
+
+Most applications won't work. Firefox appears to have protections too. You will probably need to accept a box to browse using the network.

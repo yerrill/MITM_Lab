@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ $EUID > 0 ]
-  then echo "Please run as root"
-  exit
-fi
+#if [ $EUID > 0 ] # Check seems to be buggy
+#  then echo "Please run as root"
+#  exit
+#fi
 
 # Setup ---
 apt update -y && apt upgrade -y
@@ -43,7 +43,6 @@ systemctl unmask hostapd.service
 systemctl enable hostapd.service
 
 # mitmproxy
-su $INSTALLUSER
 python3 -m pip install pipx
 #python3 -m pipx ensurepath
 pipx install mitmproxy
@@ -69,6 +68,7 @@ iptables-save > /etc/iptables.up.rules
 mv /etc/rc.local /etc/backup-rc.local
 wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/rc.local
 mv ./rc.local /etc/
+chmod +x /etc/rc.local
 
 # Enable traffic forwarding
 sysctl -w net.ipv4.ip_forward=1

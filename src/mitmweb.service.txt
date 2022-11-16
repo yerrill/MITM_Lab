@@ -1,3 +1,4 @@
+# Name: mitmweb.service
 [Unit]
 Description=mitmweb service
 After=network.target
@@ -5,7 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=/home/mitmuser/start_mitmweb.sh
+ExecStart=/root/.local/bin/start_mitmweb.sh
 Restart=on-failure
 RestartSec=5
 

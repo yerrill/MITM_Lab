@@ -1,5 +1,9 @@
 #!/bin/bash
-#Run as root, add check
+
+if [ $EUID > 0 ]
+  then echo "Please run as root"
+  exit
+fi
 
 # Setup ---
 apt update -y && apt upgrade -y
@@ -24,26 +28,34 @@ echo 'INTERFACESv4="wlan0"' >> /etc/default/isc-dhcp-server
 
 # isc-dhcp-server systemd entry
 # cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
-# Get and Move
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/isc-dhcp-server.service.ini
+mv ./isc-dhcp-server.service.ini /etc/systemd/system/isc-dhcp-server.service
 systemctl daemon-reload
 systemctl disable isc-dhcp-server
 systemctl enable isc-dhcp-server
 
 # hostapd stopped here
 # cp /usr/share/doc/hostapd/examples/hostapd.conf /etc/hostapd/
-# Get and Move
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/hostapd.conf
+mv ./hostapd.conf /etc/hostapd/
 echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' >> /etc/default/hostapd
 systemctl unmask hostapd.service
 systemctl enable hostapd.service
 
-# mitmproxy
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
+# mitmproxy (NON ROOT) CHANGE USERNAME
+su $INSTALLUSER
+python3 -m pip install pipx
+#python3 -m pipx ensurepath
 pipx install mitmproxy
-# get and move
-chmod a+x /home/mitmuser/start_mitmweb.sh
+
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/start_mitmweb.sh
+mv ./start_mitmweb.sh /root/.local/bin/
+chmod a+x /root/.local/bin/start_mitmweb.sh
+
 # nano /etc/systemd/system/mitmweb.service
-# get and move
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/mitmweb.service.txt
+mv ./mitmweb.service.txt /etc/systemd/system/mitmweb.service
+
 sudo systemctl daemon-reload
 sudo systemctl enable mitmweb.service
 
@@ -55,7 +67,8 @@ iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 80 -j REDIRECT --to
 iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 8080
 iptables-save > /etc/iptables.up.rules
 mv /etc/rc.local /etc/backup-rc.local
-# Get and Move
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/rc.local
+mv ./rc.local /etc/
 
 # Enable traffic forwarding
 sysctl -w net.ipv4.ip_forward=1

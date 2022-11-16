@@ -11,6 +11,7 @@
 #
 # By default this script does nothing.
 # Old rc.local moved to backup-rc.local
+# Name: rc.local
 
 # Print the IP address
 _IP=$(hostname -I) || true

@@ -42,7 +42,7 @@ echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' >> /etc/default/hostapd
 systemctl unmask hostapd.service
 systemctl enable hostapd.service
 
-# mitmproxy (NON ROOT) CHANGE USERNAME
+# mitmproxy
 su $INSTALLUSER
 python3 -m pip install pipx
 #python3 -m pipx ensurepath

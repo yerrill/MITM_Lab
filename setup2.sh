@@ -1,17 +1,11 @@
 #!/bin/bash
 
-#if [ $EUID > 0 ] # Check seems to be buggy
-#  then echo "Please run as root"
-#  exit
-#fi
-
 # Setup ---
 apt update -y && apt upgrade -y
 rfkill unblock wlan
-apt install -y iptables hostapd isc-dhcp-server python3-pip python3-venv
+apt install -y iptables hostapd isc-dhcp-server
 
 # dhcpcd ---
-#/bin/bash -c 'echo "# MITM Lab Entries =====" >> /etc/dhcpcd.conf'
 echo "# MITM Lab Entries =====" >> /etc/dhcpcd.conf
 echo "interface wlan0" >> /etc/dhcpcd.conf
 echo "static ip_address=192.168.16.1/24" >> /etc/dhcpcd.conf
@@ -27,7 +21,6 @@ echo "# MITM Lab Entries ===== Old config moved to /etc/default/backup-isc-dhcp-
 echo 'INTERFACESv4="wlan0"' >> /etc/default/isc-dhcp-server
 
 # isc-dhcp-server systemd entry
-# cp /run/systemd/generator.late/isc-dhcp-server.service /etc/systemd/system
 wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/isc-dhcp-server.service.ini
 mv ./isc-dhcp-server.service.ini /etc/systemd/system/isc-dhcp-server.service
 systemctl daemon-reload
@@ -42,28 +35,10 @@ echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' >> /etc/default/hostapd
 systemctl unmask hostapd.service
 systemctl enable hostapd.service
 
-# mitmproxy ---
-python3 -m pip install pipx
-#python3 -m pipx ensurepath
-pipx install mitmproxy
-
-wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/start_mitmweb.sh
-mv ./start_mitmweb.sh /root/.local/bin/
-chmod a+x /root/.local/bin/start_mitmweb.sh
-
-# nano /etc/systemd/system/mitmweb.service
-wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/mitmweb.service.txt
-mv ./mitmweb.service.txt /etc/systemd/system/mitmweb.service
-
-systemctl daemon-reload
-systemctl enable mitmweb.service
-
 # Network traffic ---
 iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080
-iptables -t nat -A PREROUTING -i wlan0 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 8080
+
 iptables-save > /etc/iptables.up.rules
 mv /etc/rc.local /etc/backup-rc.local
 wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/rc.local

@@ -38,7 +38,7 @@ systemctl enable hostapd.service
 # Network traffic ---
 iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables-save > /etc/iptables.up.rules
 mv /etc/rc.local /etc/backup-rc.local
 wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/src/rc.local

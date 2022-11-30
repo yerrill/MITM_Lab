@@ -26,6 +26,23 @@ Do not use this project to commit malicious activities. This should only be used
 
 After using the install script and restarting, the attack is ready. To run an attack, use `nslookup <site>` to find the IP of the target site. Then run `sudo iprules -u <IP>` and `sudo falseserver`. When running you should see the host IP address printed, then the header for any connections or form submissions. Once a victim has submitted a form with a user and password, `CTRL-C` the server, and run `sudo iprules -d <IP>` to allow traffic to return to the proper site.
 
+Running a `sudo iptables --table nat --list` with no attack running should return:
+
+```Text
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  anywhere             anywhere
+```
+
 ### Overview
 
 1. `nslookup <site>`

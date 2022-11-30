@@ -1,23 +1,35 @@
-# MITM_Lab
+# Man-in-the-Middle Lab
 
 A cybersecurity lab for a Man-In-The-Middle attack
 
-Based on article from [Dino Fizzotti](https://www.dinofizzotti.com/blog/2022-04-24-running-a-man-in-the-middle-proxy-on-a-raspberry-pi-4/).
+## Description
+
+The goal of this project is to intercept important details using a deceptive site. Once details are obtained, the victim is rerouted to the normal site.
+
+The installation script does two main things: creating a Wifi network and create a fake site. Once the Wifi network is created the attack can be manually activated. It reroutes traffic bound for a specific IP address to a local server, which serves a malicious site. The results of the form served appear in the terminal, and when appropriate, the attacker can stop the server and allow traffic to flow normally again.
+
+## Disclaimer
+
+Do not use this project to commit malicious activities. This should only be used in lab environments for experimentation purposes.
 
 ## Installation
 
 1. `sudo apt update -y && sudo apt upgrade -y`
 2. `sudo reboot`
-3. `sudo wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup.sh`
-4. `sudo chmod +x setup_wifi.sh`
-5. `sudo su`
+3. `sudo su`
+4. `wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup.sh`
+5. `chmod +x setup_wifi.sh`
 6. `./setup.sh`
 7. `exit` & `sudo reboot`
 
 ## Usage
 
-Go to `http://<ip address of RPi4>:9090/` on a device connected to the same network as the Pi to open the web portal.
+After using the install script and restarting, the attack is ready. To run an attack, use `nslookup <site>` to find the IP of the target site. Then run `sudo iprules -u <IP>` and `sudo falseserver`. When running you should see the host IP address printed, then the header for any connections or form submissions. Once a victim has submitted a form with a user and password, `CTRL-C` the server, and run `sudo iprules -d <IP>` to allow traffic to return to the proper site.
 
-Connect to the wifi provided by the Pi on another device. Go to `http://mitm.it` to add the certificate.
+### Overview
 
-Most applications won't work. Firefox appears to have protections too. You will probably need to accept a box to browse using the network.
+1. `nslookup <site>`
+2. `sudo iprules -u <IP>`
+3. `sudo falseserver`
+4. `CTRL-C`
+5. `sudo iprules -d <IP>`

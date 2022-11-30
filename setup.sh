@@ -3,7 +3,7 @@
 # Setup ---
 apt update -y && apt upgrade -y
 rfkill unblock wlan
-apt install -y iptables hostapd isc-dhcp-server
+apt install -y iptables hostapd isc-dhcp-server dnsutils
 
 # dhcpcd ---
 echo "# MITM Lab Entries =====" >> /etc/dhcpcd.conf

@@ -50,5 +50,14 @@ sysctl -w net.ipv4.ip_forward=1
 echo "# MITM Lab Entries =====" >> /etc/sysctl.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 
+# Download and move falseserver and iprules
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/false_server.py
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/iprules.sh
+wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/AttackPage.html
+mv ./false_server.py /bin/falseserver
+mv ./iprules.sh /bin/iprules
+chmod +x /bin/falseserver
+chmod +x /bin/iprules
+
 # End
 echo "===== Time to reboot ====="

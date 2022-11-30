@@ -8,7 +8,7 @@ Based on article from [Dino Fizzotti](https://www.dinofizzotti.com/blog/2022-04-
 
 1. `sudo apt update -y && sudo apt upgrade -y`
 2. `sudo reboot`
-3. `sudo wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup_wifi.sh`
+3. `sudo wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup.sh`
 4. `sudo chmod +x setup_wifi.sh`
 5. `sudo su`
 6. `./setup.sh`

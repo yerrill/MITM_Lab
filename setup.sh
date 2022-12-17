@@ -14,7 +14,9 @@ echo "nohook wpa_supplicant" >> /etc/dhcpcd.conf
 # isc-dhcp-server ---
 echo "# MITM Lab Entries =====" >> /etc/dhcp/dhcpd.conf
 echo "authoritative;" >> /etc/dhcp/dhcpd.conf
-echo -e 'subnet 192.168.16.0 netmask 255.255.255.0 {\n\trange 192.168.16.10 192.168.16.250;\n\toption broadcast-address 192.168.16.255;\n\toption routers 192.168.16.1;\n\toption domain-name "local";\n\toption domain-name-servers 8.8.8.8, 8.8.4.4;\n}' >> /etc/dhcp/dhcpd.conf
+echo -e 'subnet 192.168.16.0 netmask 255.255.255.0 {\n\trange 192.168.16.10 192.168.16.250;
+\n\toption broadcast-address 192.168.16.255;\n\toption routers 192.168.16.1;
+\n\toption domain-name "local";\n\toption domain-name-servers 8.8.8.8, 8.8.4.4;\n}' >> /etc/dhcp/dhcpd.conf
 
 mv /etc/default/isc-dhcp-server /etc/default/backup-isc-dhcp-server
 echo "# MITM Lab Entries ===== Old config moved to /etc/default/backup-isc-dhcp-server" >> /etc/default/isc-dhcp-server

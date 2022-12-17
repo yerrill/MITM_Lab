@@ -18,7 +18,7 @@ Do not use this project to commit malicious activities. This should only be used
 2. `sudo reboot`
 3. `sudo su`
 4. `wget https://raw.githubusercontent.com/yerrill/MITM_Lab/main/setup.sh`
-5. `chmod +x setup_wifi.sh`
+5. `chmod +x setup.sh`
 6. `./setup.sh`
 7. `exit` & `sudo reboot`
 
